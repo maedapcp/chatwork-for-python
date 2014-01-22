@@ -9,7 +9,6 @@ _url_my_tasks       = "https://api.chatwork.com/v1/my/tasks"
 _url_rooms_members  = "https://api.chatwork.com/v1/rooms/{room_id:d}/members"
 _url_rooms_messages = "https://api.chatwork.com/v1/rooms/{room_id:d}/messages" 
 
-
 def auth(token):
     c = Client()
     c._token = token
@@ -26,8 +25,8 @@ class Client:
     def my_status(self):
         return self.__get(_url_my_status)
 
-    def my_tasks(self, **params):
-        return self.__get(_url_my_tasks, params=params)
+    def my_tasks(self, **payload):
+        return self.__get(_url_my_tasks, payload=payload)
 
     def visit(self, room_id):
         self._room_id = room_id
@@ -38,7 +37,7 @@ class Client:
         return self._room_members[self._room_id]
 
     def post(self, body):
-        return self.__post(_url_rooms_messages.format(room_id=self._room_id), params={"body": body})
+        return self.__post(_url_rooms_messages.format(room_id=self._room_id), payload={"body": body})
 
     def post_to_all(self, body):
         if self._room_members is None or not self._room_members.has_key(self._room_id):
@@ -47,11 +46,11 @@ class Client:
         return self.post(body)
 
     def __get(self, url, **kwargs):
-        response = requests.get(url, params=kwargs["params"] if kwargs.has_key("params") else None, headers={"X-ChatWorkToken": self._token})
+        response = requests.get(url, params=kwargs["payload"] if kwargs.has_key("payload") else None, headers={"X-ChatWorkToken": self._token})
         return self.__process_response(response)
 
     def __post(self, url, **kwargs):
-        response = requests.post(url, params=kwargs["params"] if kwargs.has_key("params") else None, headers={"X-ChatWorkToken": self._token})
+        response = requests.post(url, data=kwargs["payload"] if kwargs.has_key("payload") else None, headers={"X-ChatWorkToken": self._token})
         return self.__process_response(response)
 
     def __process_response(self, response):
