@@ -137,6 +137,37 @@ class Client:
         url = _url_rooms_messages.format(room_id=self.room_id)
         return self.__post(url, payload={'body': body})
 
+    def post_to(self, to, body):
+        """
+        Post a message to members in this room.
+
+        >>> cli = Client('972608a5c871a0f76fac0e58f5c2871e')
+        >>> res = cli.visit(17402654).post_to([866391, 866391], 'test')
+        >>> res is not None
+        True
+        """
+        if self.room_id is None:
+            raise VagabondError()
+
+        room_members = self.members()
+
+        if not isinstance(to, (list, tuple)):
+            to = [int(to)]
+
+        dear = []
+
+        for account_id in to:
+            for m in room_members:
+                if account_id == m['account_id']:
+                    dear.append(
+                        u('[To:{0}] {1}さん').format(
+                            m['account_id'], m['name']))
+                    break
+
+        body = '\n'.join(dear) + '\n' + u(body)
+
+        return self.post(body)
+
     def post_to_all(self, body):
         """
         Post a message to all members in this room.
@@ -149,9 +180,9 @@ class Client:
         if self.room_id is None:
             raise VagabondError()
         room_members = self.members()
-        to = u'[To:{0}] {1}さん'
+        to = u('[To:{0}] {1}さん')
         to_all = [to.format(m['account_id'], m['name']) for m in room_members]
-        body = "\n".join(to_all) + "\n" + u(body)
+        body = '\n'.join(to_all) + '\n' + u(body)
         return self.post(body)
 
     def __get(self, url, **kwargs):
