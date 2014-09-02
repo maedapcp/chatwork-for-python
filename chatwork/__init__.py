@@ -1,14 +1,35 @@
 # -*- coding: utf-8 -*-
 
+try:
+    # python2
+    unicode
+
+    def u(str):
+        return str.decode("utf-8")
+
+    def b(str):
+        return str
+except:
+    # python3
+    def u(str):
+        return str
+
+    def b(str):
+        return str.encode("utf-8")
+
 from easydict import EasyDict
 
 import logging
 import requests
 
 _url_me = 'https://api.chatwork.com/v1/me'
+
 _url_my_status = 'https://api.chatwork.com/v1/my/status'
+
 _url_my_tasks = 'https://api.chatwork.com/v1/my/tasks'
+
 _url_rooms_members = 'https://api.chatwork.com/v1/rooms/{room_id:d}/members'
+
 _url_rooms_messages = 'https://api.chatwork.com/v1/rooms/{room_id:d}/messages'
 
 
@@ -130,7 +151,7 @@ class Client:
         room_members = self.members()
         to = u'[To:{0}] {1}さん'
         to_all = [to.format(m['account_id'], m['name']) for m in room_members]
-        body = "\n".join(to_all) + "\n" + body.decode('utf-8')
+        body = "\n".join(to_all) + "\n" + u(body)
         return self.post(body)
 
     def __get(self, url, **kwargs):
