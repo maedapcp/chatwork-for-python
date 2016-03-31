@@ -70,7 +70,7 @@ class Client:
         """
         Get a self introduction.
 
-        >>> cli = Client('972608a5c871a0f76fac0e58f5c2871e')
+        >>> cli = Client(token)
         >>> res = cli.me()
         >>> res is not None
         True
@@ -81,7 +81,7 @@ class Client:
         """
         Get a my status.
 
-        >>> cli = Client('972608a5c871a0f76fac0e58f5c2871e')
+        >>> cli = Client(token)
         >>> res = cli.my_status()
         >>> res is not None
         True
@@ -92,7 +92,7 @@ class Client:
         """
         Get a my tasks.
 
-        >>> cli = Client('972608a5c871a0f76fac0e58f5c2871e')
+        >>> cli = Client(token)
         >>> res = cli.my_tasks()
         >>> res is not None
         True
@@ -103,8 +103,8 @@ class Client:
         """
         Visit the room.
 
-        >>> cli = Client('972608a5c871a0f76fac0e58f5c2871e')
-        >>> res = cli.visit(17402654)
+        >>> cli = Client(token)
+        >>> res = cli.visit(room)
         >>> res is not None
         True
         """
@@ -115,8 +115,8 @@ class Client:
         """
         Get members.
 
-        >>> cli = Client('972608a5c871a0f76fac0e58f5c2871e')
-        >>> res = cli.visit(17402654).members()
+        >>> cli = Client(token)
+        >>> res = cli.visit(room).members()
         >>> res is not None
         True
         """
@@ -129,8 +129,8 @@ class Client:
         """
         Post a message in this room.
 
-        >>> cli = Client('972608a5c871a0f76fac0e58f5c2871e')
-        >>> res = cli.visit(17402654).post('test')
+        >>> cli = Client(token)
+        >>> res = cli.visit(room).post('test')
         >>> res is not None
         True
         """
@@ -141,8 +141,8 @@ class Client:
         """
         Post a message to members in this room.
 
-        >>> cli = Client('972608a5c871a0f76fac0e58f5c2871e')
-        >>> res = cli.visit(17402654).post_to([866391, 866391], 'test')
+        >>> cli = Client(token)
+        >>> res = cli.visit(room).post_to([member1, member2], 'test')
         >>> res is not None
         True
         """
@@ -172,8 +172,8 @@ class Client:
         """
         Post a message to all members in this room.
 
-        >>> cli = Client('972608a5c871a0f76fac0e58f5c2871e')
-        >>> res = cli.visit(17402654).post_to_all('test to all')
+        >>> cli = Client(token)
+        >>> res = cli.visit(room).post_to_all('test to all')
         >>> res is not None
         True
         """
