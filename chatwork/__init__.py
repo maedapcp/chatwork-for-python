@@ -125,6 +125,21 @@ class Client:
         url = _url_rooms_members.format(room_id=self.room_id)
         return self.__get(url)
 
+    def messages(self):
+        """
+        Get latest messages.
+
+        >>> cli = Client(token)
+        >>> res = cli.visit(room).messages()
+        >>> res is not None
+        True
+        """
+        if self.room_id is None:
+            raise VagabondError()
+        url = _url_rooms_messages.format(room_id=self.room_id)
+        res = self.__get(url)
+        return [] if res is None else res
+
     def post(self, body):
         """
         Post a message in this room.
